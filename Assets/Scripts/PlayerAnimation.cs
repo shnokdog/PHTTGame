@@ -19,6 +19,7 @@ public class PlayerAnimation
 
     private void OnMove(Vector2 direction)
     {
-        m_animator.SetBool("isWalk", direction.magnitude != 0);
+        m_animator.SetInteger("isWalkForward", (int)direction.y);
+        m_animator.SetInteger("isWalkRight", (int)direction.x);
     }
 }

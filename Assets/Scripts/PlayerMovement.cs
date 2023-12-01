@@ -17,7 +17,6 @@ public class PlayerMovement
     public PlayerMovement(CharacterController characterController)
     {
         m_characterController = characterController;
-
     }
 
     public void SetCallbacks(InputReader inputReader)
@@ -44,12 +43,13 @@ public class PlayerMovement
     {
 
 
-        //Vector3 offset = transform.forward * m_moveDire * speed + transform.up * m_velocityY;
 
         if (m_moveDirection.magnitude != 0)
         {
             transform.rotation = Quaternion.Euler(0f, Camera.main.transform.rotation.eulerAngles.y, 0f);
-            m_characterController.Move(transform.forward * speed * Time.deltaTime);
+
+            Vector3 direction = transform.forward * m_moveDirection.y + transform.right * m_moveDirection.x;
+            m_characterController.Move(direction * speed * Time.deltaTime);
         }
     }
 
