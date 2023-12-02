@@ -6,7 +6,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private InputReader m_inputReader;
-    [SerializeField] private Transform m_rotator;
+    [SerializeField] private Transform m_spine;
     [SerializeField] private float m_moveSpeed = 5f;
     [SerializeField] private float m_sensitive = 5f;
 
@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
     {
         m_playerMovement.ApplyGravity();
         m_playerMovement.MovePosition(transform, m_moveSpeed);
-        m_playerMovement.RotateLook(transform);
+        m_playerMovement.RotateLook(transform, m_spine, m_sensitive);   
     }
 
    

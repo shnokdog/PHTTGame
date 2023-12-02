@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerMovement
 {
     private CharacterController m_characterController;
+    private Transform m_camera;
 
     private Vector2 m_moveDirection;
     private Vector2 m_lookDirection;
@@ -17,6 +18,7 @@ public class PlayerMovement
     public PlayerMovement(CharacterController characterController)
     {
         m_characterController = characterController;
+        m_camera = Camera.main.transform;
     }
 
     public void SetCallbacks(InputReader inputReader)
@@ -42,21 +44,24 @@ public class PlayerMovement
     public void MovePosition(Transform transform, float speed)
     {
 
-
+        Vector3 direction = transform.up * m_velocityY;
 
         if (m_moveDirection.magnitude != 0)
-        {
-            transform.rotation = Quaternion.Euler(0f, Camera.main.transform.rotation.eulerAngles.y, 0f);
-
-            Vector3 direction = transform.forward * m_moveDirection.y + transform.right * m_moveDirection.x;
-            m_characterController.Move(direction * speed * Time.deltaTime);
-        }
+            direction += transform.forward * m_moveDirection.y + transform.right * m_moveDirection.x;   
+        
+        m_characterController.Move(direction * speed * Time.deltaTime);
     }
 
-    public void RotateLook(Transform transform)
+    public void RotateLook(Transform transform, Transform spine ,float sensitive)
     {
-       /* if (m_moveDirection.magnitude != 0)
-            transform.rotation = Quaternion.Euler(0f, m_camera.rotation.eulerAngles.y, 0f);*/
+        float x = m_lookDirection.x * sensitive * Time.deltaTime;
+        float y = m_lookDirection.y * sensitive * Time.deltaTime;
+
+        m_xRotate -= y;
+        m_xRotate = Mathf.Clamp(m_xRotate, -90f, 90f);
+
+        spine.localRotation = Quaternion.Euler(m_xRotate, 0, 0);
+        transform.Rotate(Vector3.up * x);
     }
 
     private void OnFire(bool state)
